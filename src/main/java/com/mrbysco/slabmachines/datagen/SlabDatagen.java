@@ -12,13 +12,14 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 import java.util.concurrent.CompletableFuture;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
 public class SlabDatagen {
 
 	@SubscribeEvent
@@ -29,8 +30,8 @@ public class SlabDatagen {
 		ExistingFileHelper helper = event.getExistingFileHelper();
 
 		if (event.includeServer()) {
-			generator.addProvider(true, new SlabRecipeProvider(packOutput));
-			generator.addProvider(true, new SlabLootProvider(packOutput));
+			generator.addProvider(true, new SlabRecipeProvider(packOutput, lookupProvider));
+			generator.addProvider(true, new SlabLootProvider(packOutput, lookupProvider));
 			SlabBlockTagProvider blockTags;
 			generator.addProvider(true, blockTags = new SlabBlockTagProvider(packOutput, lookupProvider, helper));
 			generator.addProvider(true, new SlabItemTagProvider(packOutput, lookupProvider, blockTags.contentsGetter(), helper));

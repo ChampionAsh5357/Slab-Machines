@@ -39,9 +39,10 @@ public class TNTSlabEntity extends PrimedTnt {
 		this.etho = etho;
 	}
 
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.entityData.define(IS_ETHO, Boolean.valueOf(false));
+	@Override
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(IS_ETHO, Boolean.valueOf(false));
 	}
 
 	@Override
@@ -72,11 +73,13 @@ public class TNTSlabEntity extends PrimedTnt {
 		}
 	}
 
+	@Override
 	protected void addAdditionalSaveData(CompoundTag compound) {
 		super.addAdditionalSaveData(compound);
 		compound.putBoolean("Etho", this.isEtho());
 	}
 
+	@Override
 	protected void readAdditionalSaveData(CompoundTag compound) {
 		super.addAdditionalSaveData(compound);
 		this.setEtho(compound.getBoolean("Etho"));
@@ -88,6 +91,7 @@ public class TNTSlabEntity extends PrimedTnt {
 		this.etho = isEtho;
 	}
 
+	@Override
 	public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
 		super.onSyncedDataUpdated(key);
 		if (IS_ETHO.equals(key)) {

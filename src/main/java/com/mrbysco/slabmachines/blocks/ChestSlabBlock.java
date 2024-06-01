@@ -29,7 +29,7 @@ public class ChestSlabBlock extends FacingMultiSlabBlock implements EntityBlock 
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
+	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult result) {
 		if (level.isClientSide) {
 			return InteractionResult.SUCCESS;
 		} else {
@@ -54,6 +54,7 @@ public class ChestSlabBlock extends FacingMultiSlabBlock implements EntityBlock 
 		return Stats.CUSTOM.get(Stats.OPEN_CHEST);
 	}
 
+	@Override
 	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (!state.is(newState.getBlock())) {
 			if (level.getBlockEntity(pos) instanceof Container container) {

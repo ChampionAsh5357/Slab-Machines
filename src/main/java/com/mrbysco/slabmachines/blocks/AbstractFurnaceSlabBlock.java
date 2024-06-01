@@ -29,6 +29,7 @@ public abstract class AbstractFurnaceSlabBlock extends FacingMultiSlabBlock impl
 		this.registerDefaultState(this.defaultBlockState().setValue(LIT, Boolean.valueOf(false)));
 	}
 
+	@Override
 	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (!state.is(newState.getBlock())) {
 			BlockEntity blockEntity = level.getBlockEntity(pos);

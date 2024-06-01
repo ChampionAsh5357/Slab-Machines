@@ -3,10 +3,12 @@ package com.mrbysco.slabmachines.datagen.data;
 import com.mrbysco.slabmachines.blocks.TNTSlabBlock;
 import com.mrbysco.slabmachines.init.SlabRegistry;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.WritableRegistry;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.data.loot.LootTableProvider;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.LootPool;
@@ -18,14 +20,14 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePrope
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 
 public class SlabLootProvider extends LootTableProvider {
-	public SlabLootProvider(PackOutput packOutput) {
+	public SlabLootProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider) {
 		super(packOutput, Set.of(), List.of(
 				new SubProviderEntry(SlabBlockLoot::new, LootContextParamSets.BLOCK)
-		));
+		), lookupProvider);
 	}
 
 	private static class SlabBlockLoot extends BlockLootSubProvider {
@@ -55,7 +57,7 @@ public class SlabLootProvider extends LootTableProvider {
 	}
 
 	@Override
-	protected void validate(Map<ResourceLocation, LootTable> map, ValidationContext validationtracker) {
-		map.forEach((name, table) -> table.validate(validationtracker));
+	protected void validate(WritableRegistry<LootTable> writableregistry, ValidationContext validationcontext, ProblemReporter.Collector problemreporter$collector) {
+		super.validate(writableregistry, validationcontext, problemreporter$collector);
 	}
 }

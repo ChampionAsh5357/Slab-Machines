@@ -19,8 +19,8 @@ import java.util.concurrent.CompletableFuture;
 
 public class SlabRecipeProvider extends RecipeProvider {
 
-	public SlabRecipeProvider(PackOutput packOutput) {
-		super(packOutput);
+	public SlabRecipeProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+		super(packOutput, lookupProvider);
 	}
 
 	@Override

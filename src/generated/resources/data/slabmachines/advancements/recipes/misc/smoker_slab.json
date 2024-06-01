@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "forge:cobblestone_slabs"
+            "items": "#forge:cobblestone_slabs"
           }
         ]
       },

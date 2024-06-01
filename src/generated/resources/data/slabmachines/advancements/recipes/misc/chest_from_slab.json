@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "slabmachines:chest_slab"
-            ]
+            "items": "slabmachines:chest_slab"
           }
         ]
       },

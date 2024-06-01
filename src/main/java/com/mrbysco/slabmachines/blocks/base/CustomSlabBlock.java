@@ -37,16 +37,19 @@ public class CustomSlabBlock extends Block implements SimpleWaterloggedBlock {
 		this.registerDefaultState(this.stateDefinition.any().setValue(TYPE, CustomSlabType.BOTTOM).setValue(WATERLOGGED, Boolean.valueOf(false)));
 	}
 
+	@Override
 	public boolean useShapeForLightOcclusion(BlockState state) {
 		return true;
 	}
 
+	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> blockStateBuilder) {
-		blockStateBuilder.add(new Property[]{TYPE, WATERLOGGED});
+		blockStateBuilder.add(TYPE, WATERLOGGED);
 	}
 
+	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
-		CustomSlabType slabType = (CustomSlabType) state.getValue(TYPE);
+		CustomSlabType slabType = state.getValue(TYPE);
 		return switch (slabType) {
 			case TOP -> TOP_SHAPE;
 			default -> BOTTOM_SHAPE;
@@ -57,31 +60,35 @@ public class CustomSlabBlock extends Block implements SimpleWaterloggedBlock {
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		BlockPos pos = context.getClickedPos();
 		FluidState fluidState = context.getLevel().getFluidState(pos);
-		BlockState state = (BlockState) ((BlockState) this.defaultBlockState().setValue(TYPE, CustomSlabType.BOTTOM)).setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER);
+		BlockState state = this.defaultBlockState().setValue(TYPE, CustomSlabType.BOTTOM).setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER);
 		Direction direction = context.getClickedFace();
 
 		return direction != Direction.DOWN && (direction == Direction.UP || !(context.getClickLocation().y - (double) pos.getY() > 0.5D)) ? state : (BlockState) state.setValue(TYPE, CustomSlabType.TOP);
 	}
 
+	@Override
 	public boolean canBeReplaced(BlockState state, BlockPlaceContext context) {
 		return false;
 	}
 
+	@Override
 	public FluidState getFluidState(BlockState state) {
 		return (Boolean) state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
 	}
 
+	@Override
 	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos) {
-		if ((Boolean) stateIn.getValue(WATERLOGGED)) {
+		if (stateIn.getValue(WATERLOGGED)) {
 			level.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
 		}
 
 		return super.updateShape(stateIn, facing, facingState, level, currentPos, facingPos);
 	}
 
-	public boolean isPathfindable(BlockState state, BlockGetter level, BlockPos pos, PathComputationType type) {
+	@Override
+	protected boolean isPathfindable(BlockState state, PathComputationType type) {
 		return switch (type) {
-			case WATER -> level.getFluidState(pos).is(FluidTags.WATER);
+			case WATER -> state.getFluidState().is(FluidTags.WATER);
 			default -> false;
 		};
 	}

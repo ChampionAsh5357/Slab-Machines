@@ -29,7 +29,8 @@ public class SmokerSlabBlock extends AbstractFurnaceSlabBlock {
 		super(properties.strength(2.0F, 10.0F).sound(SoundType.STONE));
 	}
 
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
+	@Override
+	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult result) {
 		if (level.isClientSide) {
 			return InteractionResult.SUCCESS;
 		} else {

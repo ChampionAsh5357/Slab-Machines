@@ -30,7 +30,8 @@ public class FurnaceSlabBlock extends AbstractFurnaceSlabBlock {
 		super(properties.strength(2.0F, 10.0F).sound(SoundType.STONE));
 	}
 
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
+	@Override
+	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult result) {
 		if (level.isClientSide) {
 			return InteractionResult.SUCCESS;
 		} else {
@@ -65,6 +66,7 @@ public class FurnaceSlabBlock extends AbstractFurnaceSlabBlock {
 	}
 
 	@Nullable
+	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
 		return createFurnaceTicker(level, blockEntityType, SlabRegistry.FURNACE_SLAB_BE.get());
 	}

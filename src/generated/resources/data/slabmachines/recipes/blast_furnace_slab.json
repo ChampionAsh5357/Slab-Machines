@@ -6,7 +6,7 @@
       "item": "slabmachines:furnace_slab"
     },
     "N": {
-      "tag": "forge:nuggets/iron"
+      "tag": "c:nuggets/iron"
     },
     "S": {
       "item": "minecraft:smooth_stone_slab"
@@ -18,6 +18,7 @@
     "SSS"
   ],
   "result": {
-    "item": "slabmachines:blast_furnace_slab"
+    "count": 1,
+    "id": "slabmachines:blast_furnace_slab"
   }
 }

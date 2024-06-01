@@ -25,7 +25,7 @@ public class CraftingTableSlabBlock extends CustomSlabBlock {
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
+	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult result) {
 		if (level.isClientSide) {
 			return InteractionResult.SUCCESS;
 		} else {
@@ -35,6 +35,7 @@ public class CraftingTableSlabBlock extends CustomSlabBlock {
 		}
 	}
 
+	@Override
 	public MenuProvider getMenuProvider(BlockState state, Level level, BlockPos pos) {
 		return new SimpleMenuProvider((id, inventory, player) ->
 				new SlabBenchMenu(id, inventory, ContainerLevelAccess.create(level, pos)), CONTAINER_NAME);

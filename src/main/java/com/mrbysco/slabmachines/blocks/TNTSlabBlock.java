@@ -6,7 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -26,6 +26,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
@@ -67,6 +68,7 @@ public class TNTSlabBlock extends CustomSlabBlock {
 		return etho;
 	}
 
+	@Override
 	public void wasExploded(Level level, BlockPos pos, Explosion explosionIn) {
 		if (!level.isClientSide) {
 			TNTSlabEntity tntentity = new TNTSlabEntity(level, (double) pos.getX() + 0.5D, (double) pos.getY(), (double) pos.getZ() + 0.5D, explosionIn.getIndirectSourceEntity(), isEthoSlab(level, pos));
@@ -83,31 +85,33 @@ public class TNTSlabBlock extends CustomSlabBlock {
 		}
 	}
 
+	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> blockStateBuilder) {
 		blockStateBuilder.add(TYPE, WATERLOGGED, UNSTABLE, ETHOSLAB);
 	}
 
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
+	@Override
+	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
 		ItemStack itemstack = player.getItemInHand(handIn);
 		Item item = itemstack.getItem();
 		if (item != Items.FLINT_AND_STEEL && item != Items.FIRE_CHARGE) {
-			return super.use(state, level, pos, player, handIn, hit);
+			return super.useItemOn(stack, state, level, pos, player, handIn, hit);
 		} else {
 			catchFire(state, level, pos, hit.getDirection(), player);
 			level.setBlock(pos, Blocks.AIR.defaultBlockState(), 11);
 			if (!player.isCreative()) {
 				if (item == Items.FLINT_AND_STEEL) {
-					itemstack.hurtAndBreak(1, player, (player1) ->
-							player1.broadcastBreakEvent(handIn));
+					itemstack.hurtAndBreak(1, player, Player.getSlotForHand(handIn));
 				} else {
 					itemstack.shrink(1);
 				}
 			}
 
-			return InteractionResult.sidedSuccess(level.isClientSide);
+			return ItemInteractionResult.sidedSuccess(level.isClientSide);
 		}
 	}
 
+	@Override
 	public void onProjectileHit(Level level, BlockState state, BlockHitResult hit, Projectile projectile) {
 		if (!level.isClientSide) {
 			Entity entity = projectile.getOwner();
@@ -121,7 +125,7 @@ public class TNTSlabBlock extends CustomSlabBlock {
 	}
 
 	@Override
-	public boolean dropFromExplosion(Explosion explosionIn) {
+	public boolean dropFromExplosion(@NotNull Explosion explosionIn) {
 		return false;
 	}
 

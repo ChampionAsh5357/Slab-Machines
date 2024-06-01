@@ -12,6 +12,7 @@ import net.minecraft.stats.Stats;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -51,6 +52,7 @@ public class NoteBlockSlab extends CustomSlabBlock {
 		return this.setInstrument(context.getLevel(), context.getClickedPos(), super.getStateForPlacement(context));
 	}
 
+	@Override
 	public BlockState updateShape(BlockState state, Direction direction, BlockState state1, LevelAccessor level, BlockPos pos, BlockPos pos1) {
 		boolean flag = direction.getAxis() == Direction.Axis.Y;
 		BlockState noteState = flag ? this.setInstrument(level, pos, state) : super.updateShape(state, direction, state1, level, pos, pos1);
@@ -69,20 +71,20 @@ public class NoteBlockSlab extends CustomSlabBlock {
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
+	protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
 		ItemStack itemstack = player.getItemInHand(hand);
 		if (itemstack.is(ItemTags.NOTE_BLOCK_TOP_INSTRUMENTS) && result.getDirection() == Direction.UP) {
-			return InteractionResult.PASS;
+			return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 		} else if (level.isClientSide) {
-			return InteractionResult.SUCCESS;
+			return ItemInteractionResult.SUCCESS;
 		} else {
 			int _new = CommonHooks.onNoteChange(level, pos, state, state.getValue(NOTE), state.cycle(NOTE).getValue(NOTE));
-			if (_new == -1) return InteractionResult.FAIL;
+			if (_new == -1) return ItemInteractionResult.FAIL;
 			state = state.setValue(NOTE, _new);
 			level.setBlock(pos, state, 3);
 			this.playNote(player, state, level, pos);
 			player.awardStat(Stats.TUNE_NOTEBLOCK);
-			return InteractionResult.CONSUME;
+			return ItemInteractionResult.CONSUME;
 		}
 	}
 

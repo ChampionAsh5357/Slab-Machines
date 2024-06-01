@@ -23,6 +23,7 @@ public class TNTPrimeSlabRenderer extends EntityRenderer<TNTSlabEntity> {
 		this.shadowRadius = 0.5F;
 	}
 
+	@Override
 	public void render(TNTSlabEntity entityIn, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int packedLightIn) {
 		poseStack.pushPose();
 		poseStack.translate(0.0D, 0.5D, 0.0D);
@@ -58,6 +59,7 @@ public class TNTPrimeSlabRenderer extends EntityRenderer<TNTSlabEntity> {
 	/**
 	 * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
 	 */
+	@Override
 	public ResourceLocation getTextureLocation(TNTSlabEntity entity) {
 		return TextureAtlas.LOCATION_BLOCKS;
 	}

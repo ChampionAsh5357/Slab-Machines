@@ -23,14 +23,17 @@ public class FacingMultiSlabBlock extends CustomSlabBlock {
 		return super.getStateForPlacement(context).setValue(FACING, context.getHorizontalDirection().getOpposite());
 	}
 
+	@Override
 	public BlockState rotate(BlockState state, Rotation rot) {
 		return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
 	}
 
+	@Override
 	public BlockState mirror(BlockState state, Mirror mirrorIn) {
 		return state.rotate(mirrorIn.getRotation(state.getValue(FACING)));
 	}
 
+	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> blockStateBuilder) {
 		blockStateBuilder.add(TYPE, WATERLOGGED, FACING);
 	}
