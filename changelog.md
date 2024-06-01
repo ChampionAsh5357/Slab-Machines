@@ -1,2 +1,1 @@
-* Update NeoForge support (Now requires **20.4.131-beta** or above)
-* Re-enable JEI support
+* Initial update to 1.20.6
