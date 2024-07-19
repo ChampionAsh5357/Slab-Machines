@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "S": {
-      "tag": "forge:cobblestone_slabs"
+      "tag": "c:cobblestone/slabs"
     }
   },
   "pattern": [

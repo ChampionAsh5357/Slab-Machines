@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "#forge:cobblestone_slabs"
+            "items": "#c:cobblestone/slabs"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "slabmachines:slab_from_furnace"
+        "recipe": "slabmachines:smoker_slab"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "slabmachines:slab_from_furnace"
+      "slabmachines:smoker_slab"
     ]
   }
 }

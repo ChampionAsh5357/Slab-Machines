@@ -32,8 +32,8 @@ public class SlabLootProvider extends LootTableProvider {
 
 	private static class SlabBlockLoot extends BlockLootSubProvider {
 
-		protected SlabBlockLoot() {
-			super(Set.of(), FeatureFlags.REGISTRY.allFlags());
+		protected SlabBlockLoot(HolderLookup.Provider provider) {
+			super(Set.of(), FeatureFlags.REGISTRY.allFlags(), provider);
 		}
 
 		@Override
